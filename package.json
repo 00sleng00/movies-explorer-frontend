@@ -19,7 +19,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "npx eslint .",
-    "deploy": "npm run build && scp -r ./build/* movies@51.250.23.81:/home/movies/movies-frontend"
+    "deploy": "npm run build && scp -r ./build/* movies@51.250.23.81:/home/movies/movies-explorer-api"
   },
   "eslintConfig": {
     "extends": [
