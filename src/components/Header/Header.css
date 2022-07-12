@@ -1,0 +1,36 @@
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 18px;
+}
+
+.header_theme_dark {
+  background-color: #202020;
+}
+
+.header_theme_bright {
+  background-color: #073042;
+}
+
+.header__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 70px;
+    width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    .header__content {
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .header__content {
+        margin-right: 14px;
+    }
+}

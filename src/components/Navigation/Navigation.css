@@ -1,0 +1,26 @@
+.main-nav {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 16px;
+    left: 44px;
+    position: relative;
+}
+
+.main-nav__link {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 114%;
+    transition: opacity linear 0.5s;
+}
+
+.main-nav__link:hover {
+    opacity: 0.7;
+    transition: opacity linear 0.5s;
+}
+
+.main-nav__link_active {
+    font-weight: 500;
+}
