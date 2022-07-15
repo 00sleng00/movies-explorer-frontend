@@ -6,7 +6,7 @@ import Fail from '../../images/fail.svg'
 
 function InfoTooltip({ onClose, isSuccess }) {
     const [isOpenInfoTooltip, setIsOPenInfoTooltip] = useState(false)
-    
+
     useEffect(() => {
         const timer = setTimeout(() => setIsOPenInfoTooltip(true), 6000)
         return () => clearTimeout(timer)
