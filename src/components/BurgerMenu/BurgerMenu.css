@@ -1,15 +1,15 @@
 .burger-menu__left {
-  position: absolute;
-  width: 32%;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  background-color: #000000;
-  opacity: 0.3;
-}
+    position: absolute;
+    width: 32%;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background-color: #000000;
+    opacity: 0.3;
+    }
 
-.burger-menu__left_none {
-  display: none;
+    .burger-menu__left_none {
+    display: none;
 }
 
 .burger-menu {
