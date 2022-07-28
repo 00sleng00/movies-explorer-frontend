@@ -1,0 +1,23 @@
+.movies-card__mark-button {
+    padding: 0;
+    border: none;
+    background-color: #313131;
+    background-image: url(../../images/mark-icon.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 36px;
+    cursor: pointer;
+    transition: opacity linear 0.5s;
+}
+
+.movies-card__mark-button:hover {
+    opacity: 0.8;
+    transition: opacity linear 0.5s;
+}
+
+.movies-card__mark-button_marked {
+    background-color: #3ddc84;
+    background-image: url(../../images/mark-icon-marked.svg);
+}

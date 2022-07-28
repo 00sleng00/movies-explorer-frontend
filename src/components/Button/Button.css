@@ -1,0 +1,19 @@
+.button {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 110%;
+    cursor: pointer;
+    transition: opacity linear 0.5s;
+    padding: 0;
+}
+
+
+@media screen and (max-width: 450px) {
+    .button {
+        font-size: 10px;
+        line-height: 132%;
+    }
+}

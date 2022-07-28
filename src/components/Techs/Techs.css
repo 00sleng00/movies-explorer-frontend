@@ -1,0 +1,109 @@
+.technology {
+    background-color: #272727;
+    margin: 0;
+    padding: 0 70px;
+}
+
+.technology__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.technology__title {
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 96%;
+    letter-spacing: -0.04em;
+    margin: 90px 0 26px;
+}
+
+.technology__subtitle {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 118%;
+    letter-spacing: -0.04em;
+    max-width: 460px;
+    text-align: center;
+}
+
+.lechnology__list {
+    list-style: none;
+    margin: 100px 0;
+    padding: 0;
+    width: 100%;
+    max-width: 690px;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 90px);
+    gap: 10px;
+}
+
+.technology__list-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 90px;
+    height: 60px;
+    background-color: #303030;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.04em;
+    transition: transform linear 0.5s;
+}
+
+.technology__list-item:hover {
+    transform: scale(1.1);
+    transition: transform linear 0.5s;
+}
+
+@media screen and (max-width: 768px) {
+    .technology {
+        padding: 0 50px;
+    }
+
+    .technology__title {
+        margin: 80px 0 22px;
+    }
+
+    .technology__subtitle {
+        font-size: 12px;
+        line-height: 124%;
+    }
+
+    .lechnology__list {
+        margin: 83px 0 90px;
+        grid-template-columns: repeat(auto-fit, 84px);
+        max-width: 648px;
+    }
+
+    .technology__list-item {
+        max-width: 84px;
+        height: 57px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+  .technology {
+    background-color: #202020;
+}
+
+    .technology__title {
+        font-size: 30px;
+        line-height: 100%;
+        margin: 60px 0 24px;
+    }
+
+    .technology__subtitle {
+        font-size: 11px;
+        line-height: 120%;
+    }
+
+    .lechnology__list {
+        margin: 50px 0 70px;
+    }
+}
