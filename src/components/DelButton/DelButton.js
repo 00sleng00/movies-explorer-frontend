@@ -1,8 +1,12 @@
 import './DelButton.css'
 
-function DelButton() {
+function DelButton({ onClick }) {
     return (
-        <button type="button" className="movies-card__delete-button"></button>
+        <button
+            type="button"
+            className="movies-card__delete-button"
+            onClick={onClick}
+        ></button>
     )
 }
 

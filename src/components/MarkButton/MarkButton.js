@@ -1,22 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './MarkButton.css'
 
-function MarkButton() {
-    const [isMarked, setIsMarked] = useState(false)
-
-    function handleMarkMovie() {
-        setIsMarked(!isMarked)
-    }
-
+function MarkButton({ onClick, isSavedMovie }) {
     return (
         <button
             type="button"
             className={
-                !isMarked
+                !isSavedMovie
                     ? 'movies-card__mark-button'
                     : 'movies-card__mark-button movies-card__mark-button_marked'
             }
-            onClick={handleMarkMovie}
+            onClick={onClick}
         ></button>
     )
 }

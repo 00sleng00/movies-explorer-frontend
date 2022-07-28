@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import {
+    Navigate,
+    Route,
+    Routes,
+    useNavigate,
+    useLocation,
+} from 'react-router-dom'
 import './App.css'
 import Header from '../Header/Header'
 import Login from '../Login/Login'
@@ -10,256 +16,316 @@ import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
 import PageNotFound from '../PageNotFound/PageNotFound'
-import api from '../../utils/api'
-import auth from '../../utils/auth'
+import mainApi from '../../utils/mainApi'
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [searchMoviesError, setSearchMoviesError] = useState('')
-  const [initialMovies, setInitialMovies] = useState([])
-  const [searchedMovies, setSearchedMovies] = useState([])
-  const [isSaved, setIsSaved] = useState(false)
-  const [savedMovies, setSavedMovies] = useState([])
+    const navigate = useNavigate()
+    const location = useLocation()
 
-  function getMovies() {
-    api
-      .getInitialMovies()
-      .then((movieData) => {
-        if (movieData.length !== 0) {
-          localStorage.setItem('movies', JSON.stringify(movieData))
-          setInitialMovies(movieData)
+    const [loggedIn, setLoggedIn] = useState(false)
+    const [currentUser, setCurrentUser] = useState({})
+
+    const [isSuccess, setIsSuccess] = useState(false)
+    const [isRequestSend, setIsRequestSend] = useState(false)
+    const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false)
+
+    const [savedMovies, setSavedMovies] = useState([])
+
+    const [profileMessage, setProfileMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
+
+    useEffect(() => {
+        if (loggedIn) {
+            mainApi
+                .getProfile()
+                .then((profileData) => {
+                    const data = {
+                        name: profileData.name,
+                        email: profileData.email,
+                        _id: profileData._id,
+                    }
+                    setCurrentUser(data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
-      })
-      .catch(() => {
-        localStorage.removeItem('movies')
-        setSearchMoviesError(
-          'Во время запроса произошла ошибка. ' +
-          'Возможно, проблема с соединением или сервер недоступен. ' +
-          'Подождите немного и попробуйте ещё раз'
-        )
-      })
-  }
+    }, [loggedIn])
 
 
-
-  useEffect(() => {
-    setIsLoading(false);
-    const initialMovies = JSON.parse(localStorage.getItem('movies'))
-
-    if (initialMovies) {
-      const movieData = initialMovies.map((item) => {
-        const imageURL = item.image.url
-        return {
-          id: item.id,
-          title: item.nameRU,
-          duration: item.duration,
-          image: `https://api.nomoreparties.co${imageURL}`,
-          trailer: item.trailerLink,
+    useEffect(() => {
+        const token = localStorage.getItem('jwt')
+        if (token) {
+            mainApi
+                .getSavedMovies()
+                .then((data) => {
+                    setSavedMovies(
+                        data.filter((item) => item.owner === currentUser._id)
+                    )
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
-      })
+    }, [currentUser])
 
-      setInitialMovies(movieData)
-    } else {
-      getMovies()
+    useEffect(() => {
+        setIsRequestSend(true)
+    }, [])
+
+    const handleRegister = (userData) => {
+        setIsRequestSend(false)
+        mainApi
+            .register(userData)
+            .then(() => {
+                setIsSuccess(true)
+                handleAuthorize(userData)
+            })
+            .catch((err) => {
+                console.log(err)
+                setIsSuccess(false)
+                if (err.statusCode === 409) {
+                    setErrorMessage(
+                        'Пользователь с таким email уже зарегистрирован.'
+                    )
+                } else {
+                    setErrorMessage(
+                        'При регистрации произошла ошибка. Попробуйте снова.'
+                    )
+                }
+            })
+            .finally(() => {
+                setIsInfoTooltipOpen(true)
+                setIsRequestSend(true)
+            })
     }
-  }, [])
 
-
-  function searchMovies(initialMovies, searchQuery) {
-    setIsLoading(true)
-    if (searchQuery) {
-      const searchedMovies = initialMovies.filter((movie) =>
-        movie.title.includes(searchQuery)
-      )
-      if (searchedMovies.length === 0) {
-        setSearchMoviesError('Ничего не найдено.')
-      } else {
-        setSearchMoviesError('')
-      }
-      // localStorage.setItem('searchQuery', searchQuery);
-      // localStorage.setItem('searchedMovies', searchedMovies);
-      return searchedMovies;
+    const handleAuthorize = (userData) => {
+        setIsRequestSend(false)
+        mainApi
+            .authorize(userData)
+            .then((data) => {
+                if (data.token) {
+                    localStorage.setItem('jwt', data.token)
+                    setIsSuccess(true)
+                    setLoggedIn(true)
+                    navigate('/movies')
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+                setIsSuccess(false)
+                if (err.statusCode === 400) {
+                    setErrorMessage('Ошибка')
+                } else if (err.statusCode === 401) {
+                    setErrorMessage('Не правильные почта или пароль')
+                } else {
+                    setErrorMessage(
+                        'При авторизации произошла ошибка. Попробуйте снова.'
+                    )
+                }
+            })
+            .finally(() => {
+                setIsInfoTooltipOpen(true)
+                setIsRequestSend(true)
+            })
     }
-    return []
-  }
 
-  function handleSearchMovies(searchQuery) {
-    const searchedMovies = searchMovies(initialMovies, searchQuery)
-
-    setSearchedMovies(searchedMovies)
-    localStorage.setItem('searchQuery', searchQuery);
-    localStorage.setItem('searchedMovies', searchedMovies);
-    setIsLoading(false)
-  }
-
-  function handleSaveMovie(movie) {
-    auth.saveMovie(movie)
-      .then((newMovie) => {
-        setSavedMovies([newMovie, ...savedMovies]);
-        console.log(savedMovies)
-        setIsSaved(true);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function handleDeleteMovie(movie) {
-    auth.deleteMovie(movie.id)
-      .then(() => {
-        setSavedMovies((movies) => movies.filter((item) => item.id !== movie.id));
-        setIsSaved(false);
-      })
-      .catch((err) => console.log(err));
-  }
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
-  const history = useNavigate();
-  function handleInfoTooltipSetOpen() {
-    setIsInfoTooltipOpen(!isInfoTooltipOpen);
-  }
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  function handleRegister(name, email, password) {
-    auth
-      .register(name, email, password)
-      .then(() => {
-        setIsSuccess(true);
-        console.log(isSuccess);
-        history.push("/signin");
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsSuccess(false);
-      })
-      .finally(() => {
-        handleInfoTooltipSetOpen();
-      });
-  }
-
-  function handleAuthorize(email, password) {
-    auth
-      .authorize(email, password)
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem("jwt", data.token);
-          // setEmailAuthorized(data.email);
-          history.push('/');
-          // handleTokenCheck();
-          setLoggedIn(true);
+    useEffect(() => {
+        const token = localStorage.getItem('jwt')
+        if (token) {
+            mainApi
+                .checkToken(token)
+                .then((res) => {
+                    if (res) {
+                        setLoggedIn(true)
+                        navigate(location)
+                    }
+                })
+                .catch((err) => console.log(err))
         }
-      })
-      .catch((err) => console.log(err));
-  }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-  function handleTokenCheck() {
-    const token = localStorage.getItem("jwt");
-    if (token) {
-      setLoggedIn(true);
-      auth
-        .checkToken(token)
-        .then((res) => {
-          if (res) {
-            // setEmailAuthorized(res.email);
-          }
-
-          history.push('/');
-        })
-        .catch((err) => console.log(err));
+    const handleUpdateProfile = (userData) => {
+        mainApi
+            .updateProfile(userData)
+            .then((newUserData) => {
+                setCurrentUser(newUserData)
+                setProfileMessage('Данные успешно обновлены.')
+            })
+            .catch((err) => {
+                console.log(err)
+                if (err.code === 409) {
+                    setProfileMessage(
+                        'Пользователь с данным email уже существует.'
+                    )
+                } else {
+                    setProfileMessage('При обновлении данных произошла ошибка.')
+                }
+            })
     }
-  }
 
-  function handleLogOut() {
-    localStorage.removeItem("jwt");
-    setLoggedIn(false);
-    setCurrentUser({});
-  }
-
-  useEffect(() => {
-    handleTokenCheck();
-    if (loggedIn) {
-      // history.push('/');
-      auth.getProfile()
-        .then((profileData) => {
-          const data = {
-            name: profileData.name,
-            email: profileData.email,
-            _id: profileData._id,
-          };
-          setCurrentUser(data);
-        })
-        .catch((err) => console.log(err));
+    const handleLogOut = () => {
+        localStorage.clear()
+        setLoggedIn(false)
+        setCurrentUser({})
+        navigate('/')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedIn]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsInfoTooltipOpen(false), 3000)
-    return () => clearTimeout(timer)
-  })
-  const [currentUser, setCurrentUser] = useState({});
 
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="page-container">
-        <Header />
+    const handleSaveMovie = (movie) => {
+        mainApi
+            .saveMovie(movie)
+            .then((newMovie) => {
+                setSavedMovies([newMovie, ...savedMovies])
+                setIsSuccess(true)
+            })
+            .catch((err) => {
+                console.log(err)
+                setIsSuccess(false)
+                setErrorMessage(
+                    'При сохранени фильма произошла ошибка. Попробуйте снова.'
+                )
+            })
+            .finally(() => {
+                setIsInfoTooltipOpen(true)
+            })
+    }
 
-        <Routes>
-          <Route path="/signup" element={<Register onRegister={handleRegister} isSuccess={isSuccess} />}></Route>
 
-          <Route path="/signin" element={<Login onLogin={handleAuthorize} isSuccess={isSuccess} />}></Route>
+    const handleDeleteMovie = (movie) => {
+        mainApi
+            .deleteMovie(movie._id)
+            .then(() => {
+                setSavedMovies((movies) =>
+                    movies.filter((m) => m._id !== movie._id)
+                )
+                setIsSuccess(true)
+            })
+            .catch((err) => {
+                console.log(err)
+                setIsSuccess(false)
+                setErrorMessage(
+                    'При удалении фильма произошла ошибка. Попробуйте снова.'
+                )
+            })
+            .finally(() => {
+                setIsInfoTooltipOpen(true)
+            })
+    }
 
-          <Route path="/profile" element={<Profile onLogout={handleLogOut} />}></Route>
+    useEffect(() => {
+        const timer = setTimeout(() => setIsInfoTooltipOpen(false), 2000)
+        return () => clearTimeout(timer)
+    })
 
-          <Route
-            path="/"
-            element={[
-              <Main key={'index0'} />,
-              <Footer key={'index1'} />,
-            ]}
-          ></Route>
+    return (
+        <CurrentUserContext.Provider value={currentUser}>
+            <div className="page-container">
+                <Header loggedIn={loggedIn} />
 
-          <Route
-            path="/movies"
-            element={[
-              <Movies
-                key={'index0'}
-                isLoading={isLoading}
-                searchMoviesError={searchMoviesError}
-                filterCheckbox
-                onSearch={handleSearchMovies}
-                searchedMovies={searchedMovies}
-                onSave={handleSaveMovie}
-                onDelete={handleDeleteMovie}
-                isSaved={isSaved}
-              />,
-              <Footer key={'index1'} />,
-            ]}
-          ></Route>
+                <Routes>
+                    <Route
+                        path="/signup"
+                        element={
+                            loggedIn ? (
+                                <Navigate to="/movies" replace />
+                            ) : (
+                                <Register
+                                    onRegister={handleRegister}
+                                    isSuccess={isSuccess}
+                                    isRequestSend={isRequestSend}
+                                    isInfoTooltipOpen={isInfoTooltipOpen}
+                                    errorMessage={errorMessage}
+                                />
+                            )
+                        }
+                    ></Route>
 
-          <Route
-            path="/saved-movies"
-            element={[
-              <SavedMovies
-                key={'index0'}
-                isLoading={isLoading}
-                searchMoviesError={searchMoviesError}
-                filterCheckbox
-                onSearch={handleSearchMovies}
-                savedMovies={savedMovies}
-                onSave={handleSaveMovie}
-                onDelete={handleDeleteMovie}
-                isSaved={isSaved}
-              />,
-              <Footer key={'index1'} />,
-            ]}
-          ></Route>
+                    <Route
+                        path="/signin"
+                        element={
+                            loggedIn ? (
+                                <Navigate to="/movies" replace />
+                            ) : (
+                                <Login
+                                    onLogin={handleAuthorize}
+                                    isSuccess={isSuccess}
+                                    isRequestSend={isRequestSend}
+                                    isInfoTooltipOpen={isInfoTooltipOpen}
+                                    errorMessage={errorMessage}
+                                />
+                            )
+                        }
+                    ></Route>
 
-          <Route path="/*" element={<PageNotFound />}></Route>
-        </Routes>
-      </div>
-    </CurrentUserContext.Provider>
-  )
+                    <Route
+                        element={
+                            <ProtectedRoute
+                                loggedIn={loggedIn}
+                            ></ProtectedRoute>
+                        }
+                    >
+                        <Route
+                            path="/profile"
+                            element={
+                                <Profile
+                                    onLogout={handleLogOut}
+                                    onUpdateProfile={handleUpdateProfile}
+                                    message={profileMessage}
+                                />
+                            }
+                        ></Route>
+
+                        <Route
+                            path="/movies"
+                            element={[
+                                <Movies
+                                    key={'index0'}
+                                    onSave={handleSaveMovie}
+                                    onDelete={handleDeleteMovie}
+                                    moviesCardList={savedMovies}
+                                    isSuccess={isSuccess}
+                                    isInfoTooltipOpen={isInfoTooltipOpen}
+                                    errorMessage={errorMessage}
+                                />,
+                                <Footer key={'index1'} />,
+                            ]}
+                        ></Route>
+
+                        <Route
+                            path="/saved-movies"
+                            element={[
+                                <SavedMovies
+                                    key={'index0'}
+                                    onDelete={handleDeleteMovie}
+                                    moviesCardList={savedMovies}
+                                    isSuccess={isSuccess}
+                                    isInfoTooltipOpen={isInfoTooltipOpen}
+                                    errorMessage={errorMessage}
+                                />,
+                                <Footer key={'index1'} />,
+                            ]}
+                        ></Route>
+                    </Route>
+
+                    <Route
+                        path="/"
+                        element={[
+                            <Main key={'index0'} />,
+                            <Footer key={'index1'} />,
+                        ]}
+                    ></Route>
+
+                    <Route path={'*'} element={<PageNotFound />}></Route>
+                </Routes>
+            </div>
+        </CurrentUserContext.Provider>
+    )
 }
 
 export default App
