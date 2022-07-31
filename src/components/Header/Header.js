@@ -106,11 +106,27 @@ function Header({ loggedIn }) {
       <div className="header__content">
         <Routes>
           <Route
-            path="/"
-            element={[
-              <RegButton key={'index0'} />,
-              <LoginButton key={'index1'} />,
-            ]}
+          path="/"
+          element={
+              loggedIn
+                  ? [
+                        <BurgerMenuButton
+                            isOpen={isBurgerMenuOpen}
+                            handleClick={handleClickBurgerMenu}
+                            key={'index0'}
+                        />,
+                        <BurgerMenu
+                            isOpen={isBurgerMenuOpen}
+                            handleClick={handleClickBurgerMenu}
+                            onClose={handleCloseBurgerMenu}
+                            key={'index1'}
+                        />,
+                    ]
+                  : [
+                        <RegButton key={'index0'} />,
+                        <LoginButton key={'index1'} />,
+                    ]
+          }
           ></Route>
 
           <Route
