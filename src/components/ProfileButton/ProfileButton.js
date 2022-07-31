@@ -1,13 +1,18 @@
+import React from 'react'
 import './ProfileButton.css'
-import { Link } from 'react-router-dom'
-import Button from '../Button/Button'
+import { NavLink } from 'react-router-dom'
 
-function ProfileButton(onClose) {
-    return (
-        <Link className="profile-button__link" to="/profile" onClick={onClose}>
-            <Button buttonText="Аккаунт" />
-        </Link>
-    )
+function ProfileButton({ onClose }) {
+  return (
+    <NavLink
+      className="profile-button__link"
+      to="/profile"
+      onClick={onClose}>
+      Аккаунт
+    </NavLink>
+  )
 }
 
 export default ProfileButton
+
+

@@ -79,19 +79,20 @@ function SearchForm({ onSearchMovies, savedMoviesRoute }) {
           />
         </button>
       </form>
-        <label className="search-filter-checkbox">
-          <p className="search-form__filter-caption">Короткометражки</p>
-          <input className="search-form__filter-checkbox"
-            type="checkbox"
-            onChange={handleCheckBoxChange} />
-          <span
-            className={
-              !checkBoxStatus
-                ? 'search-form__checkbox-cover-off'
-                : 'search-form__checkbox-cover-on'
-            }
-          ></span>
-        </label>
+      <label className="search-filter-checkbox">
+        <p className="search-form__filter-caption">Короткометражки</p>
+        <input className="search-form__filter-checkbox"
+          type="checkbox"
+          onChange={handleCheckBoxChange}
+        />
+        <span
+          className={
+            !checkBoxStatus
+              ? 'search-form__checkbox-cover-off'
+              : 'search-form__checkbox-cover-on'
+          }
+        ></span>
+      </label>
     </div>
   )
 }
