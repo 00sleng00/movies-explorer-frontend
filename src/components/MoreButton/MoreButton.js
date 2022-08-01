@@ -1,10 +1,10 @@
 import './MoreButton.css'
 import Button from '../Button/Button'
 
-function MoreButton() {
+function MoreButton({ onClick }) {
     return (
         <div className="more-button">
-            <Button buttonText="Еще" />
+            <Button buttonText="Еще" onClick={onClick} />
         </div>
     )
 }

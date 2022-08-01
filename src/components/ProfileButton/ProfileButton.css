@@ -9,6 +9,8 @@
   padding-right: 37px;
   position: relative;
   text-decoration: none;
+  align-items: center;
+  color: #fff;
 }
 
 .profile-button__link:after {

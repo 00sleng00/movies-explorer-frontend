@@ -6,6 +6,14 @@
     max-width: 1140px;
 }
 
+.movies__message {
+  margin-top: 50px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 400;
+  color: #8b8b8b;
+}
+
 @media screen and (max-width: 768px) {
     .movies {
         width: 92%;

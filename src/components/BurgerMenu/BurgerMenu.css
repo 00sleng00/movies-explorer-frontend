@@ -77,6 +77,12 @@
 }
 
 .burger-menu-nav__link_active {
+  text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 100%;
+    transition: opacity linear 0.5s;
     border-bottom: solid 2px #ffffff;
     padding-bottom: 4px;
 }
