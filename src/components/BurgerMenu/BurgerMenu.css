@@ -1,15 +1,15 @@
 .burger-menu__left {
-    position: absolute;
-    width: 32%;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    background-color: #000000;
-    opacity: 0.3;
-    }
+  position: absolute;
+  width: 32%;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #000000;
+  opacity: 0.3;
+}
 
-    .burger-menu__left_none {
-    display: none;
+.burger-menu__left_none {
+  display: none;
 }
 
 .burger-menu {
@@ -77,6 +77,12 @@
 }
 
 .burger-menu-nav__link_active {
+  text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 100%;
+    transition: opacity linear 0.5s;
     border-bottom: solid 2px #ffffff;
     padding-bottom: 4px;
 }
