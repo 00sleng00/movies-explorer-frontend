@@ -1,9 +1,20 @@
 .about-project {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 110px;
-    margin: 0 70px;
-    background-color: #202020;
+  background-color: #202020;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.about-project__container{
+  max-width: 1280px;
+  width: 100%;
+  padding: 110px 70px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  align-items: flex-start;
+  flex-direction: column;
 }
 
 .about-project__content {
@@ -76,9 +87,8 @@
 }
 
 @media screen and (max-width: 768px) {
-    .about-project {
-        padding-bottom: 90px;
-        margin: 0 50px;
+    .about-project__container {
+      padding: 90px 50px;
     }
 
     .about-project__content {
@@ -101,9 +111,8 @@
 }
 
 @media screen and (max-width: 450px) {
-    .about-project {
-        margin: 0 18px;
-        padding-bottom: 70px;
+    .about-project__container {
+      padding: 71px 18px;
     }
 
     .about-project__content {

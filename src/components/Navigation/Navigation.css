@@ -5,6 +5,7 @@
     gap: 16px;
     left: 44px;
     position: relative;
+    align-items: center;
 }
 
 .main-nav__link {

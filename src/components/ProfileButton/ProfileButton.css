@@ -1,7 +1,7 @@
 .profile-button__link {
   display: flex;
   border-radius: 40px;
-  box-shadow: 0 3px 14pxrgba(0,0,0,.08);
+  box-shadow: 0 3px 14pxrgba(0, 0, 0, .08);
   font-size: 14px;
   font-weight: 500;
   line-height: 1.14;
@@ -15,7 +15,7 @@
 
 .profile-button__link:after {
   background-color: #313131;
-  background-image: url(/src/images/icon-main.svg);;
+  background-image: url(/src/images/icon-main.svg);
   background-position: 50%;
   background-repeat: no-repeat;
   border-radius: 50px;
@@ -24,12 +24,24 @@
   position: absolute;
   width: 30px;
   top: 0;
-right: 0;
+  right: 0;
 }
 
 
 
 .profile-button__link:hover {
-    opacity: 0.7;
-    transition: opacity linear 0.5s;
+  opacity: 0.7;
+  transition: opacity linear 0.5s;
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .profile-button__link {
+    padding-left: 15px;
+  }
+
+  .profile-button__link:last-child {
+    margin: auto 0 90px;
+  }
 }
