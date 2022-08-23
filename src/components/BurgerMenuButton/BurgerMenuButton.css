@@ -1,17 +1,94 @@
 .burger-menu-button {
-    display: block;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: opacity linear 0.5s;
+  display: none;
+  align-items: center;
+  position: absolute;
+  top: 27px;
+  right: 38px;
+  width: 28px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 6;
+  transition: all .3s ease;
+  border: none;
+  background: none;
+  padding: 0;
 }
+
 
 .burger-menu-button:hover {
-    opacity: 0.8;
-    transition: opacity linear 0.5s;
+  opacity: .8;
 }
 
-.burger-menu-button_invisible {
-    display: none;
+.burger-menu-button:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 4px;
+  border-radius: 5px;
+}
+
+.burger-menu-button_off>span,
+.burger-menu-button_off>span::before,
+.burger-menu-button_off>span::after {
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  transition: all .3s ease;
+}
+
+.burger-menu-button_off>span::after,
+.burger-menu-button_off>span::before {
+  content: '';
+  top: -10px;
+}
+
+.burger-menu-button_off>span::after {
+  top: 10px;
+}
+
+.burger-menu-button_off>span {
+  top: 50%;
+  transform: scale(1) translate(0px, -50%);
+}
+
+
+.burger-menu-button_on>span,
+.burger-menu-button_on>span::before,
+.burger-menu-button_on>span::after {
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  transition: all .3s ease;
+  transform: rotate(45deg);
+}
+
+
+.burger-menu-button_on>span::before,
+.burger-menu-button_on>span::after {
+  content: '';
+}
+
+.burger-menu-button_on>span::before {
+  top: 0;
+  transform: rotate(0);
+}
+
+.burger-menu-button_on>span::after {
+  top: 0;
+  transform: rotate(90deg);
+}
+
+@media screen and (max-width: 800px) {
+  .burger-menu-button {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .burger-menu-button {
+    right: 23px;
+    width: 22px;
+  }
 }
