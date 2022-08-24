@@ -63,8 +63,6 @@
 @media screen and (max-width: 450px) {
   .burger-menu {
     width: 100%;
-    padding-top: 144px;
-    padding-bottom: 46px;
   }
 
   .burger-menu-close-button {
