@@ -41,9 +41,9 @@ function Header({ loggedIn }) {
         }`}>
         <div className="header__content" >
           <Routes>
-            <Route path="/" element={[
+            <Route path="/" element={loggedIn ? [
               <LogoContainer key={'index'} />,
-              <Navigation key={'index0'} />]}>
+              <Navigation key={'index0'} />] : [<Navigation key={'index0'}/>]}>
             </Route>
 
             <Route path="/movies" element={[
