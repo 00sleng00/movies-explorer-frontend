@@ -6,7 +6,7 @@
 
 Данное вэб-приложение является сайтом-портфолио и мини-кинопоиском, открывающимся после регистрации.
 
-Бэкэнд часть проекта располагается [тут](https://github.com/TinaevNK/movies-explorer-api).
+Бэкэнд часть проекта располагается [тут](https://github.com/00sleng00/movies-explorer-api).
 
 <p align="center"><img src="https://sun1-21.userapi.com/impg/NTKkyXFnJQtISBD0lmSFM9WPCssYb4JzWvoFxw/kHTB8y1jXTg.jpg?size=1134x939&quality=96&sign=e1f096385dda9665016ca935e9d72b8b&type=album" width="700px"></a></p>
 
