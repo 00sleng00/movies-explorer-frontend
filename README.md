@@ -8,7 +8,7 @@
 
 Бэкэнд часть проекта располагается [тут](https://github.com/00sleng00/movies-explorer-api).
 
-<p align="center"><img src="https://sun1-21.userapi.com/impg/NTKkyXFnJQtISBD0lmSFM9WPCssYb4JzWvoFxw/kHTB8y1jXTg.jpg?size=1134x939&quality=96&sign=e1f096385dda9665016ca935e9d72b8b&type=album" width="700px"></a></p>
+<p align="center"> <img src="https://ie.wampi.ru/2023/02/03/RESULT_MAIN.png" alt="RESULT_MAIN.png" border="0"> </a></p>
 
 ***В нём представлены:***
 
